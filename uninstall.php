@@ -1,3 +1,6 @@
 <?php
-defined( 'WP_UNINSTALL_PLUGIN' ) || exit;
-delete_option( 'dlm_settings' );
+if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
+    exit;
+}
+
+// Nothing to clean up (no DB writes)

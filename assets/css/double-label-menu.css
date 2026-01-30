@@ -1,46 +1,55 @@
-/* =====================================================
-   DOUBLE LABEL MENU
-   CSS-ONLY EXTENSION FOR NAVIGATION BLOCK
-   ===================================================== */
+/* ======================================================
+   Double Label Menu — Frontend Styling
+   ====================================================== */
+
+/* ---------- CSS Variables (frontend controls) ---------- */
 
 :root {
-  --dlm-scope: .wp-block-navigation;
-  --dlm-chevron-color: #2E0F1E;
+  --dlm-primary-size: 16px;
+  --dlm-secondary-size: 13px;
+  --dlm-secondary-opacity: 0.75;
+  --dlm-stack-gap: 2px;
   --dlm-chevron-size: 8px;
-  --dlm-chevron-offset: 25px;
-  --dlm-breakpoint: 1280px;
+  --dlm-chevron-color: currentColor;
 }
 
-/* -----------------------------------------------------
-   STACKED LABELS
-   ----------------------------------------------------- */
+/* ---------- Base stack ---------- */
 
-var(--dlm-scope) .nav-stack {
+.dlm-stack {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  line-height: 1.4;
-  padding-right: var(--dlm-chevron-offset);
+  gap: var(--dlm-stack-gap);
   position: relative;
+  padding-right: 20px; /* space for chevron */
 }
 
-/* Hide native WP arrow */
-var(--dlm-scope) .wp-block-navigation__submenu-icon {
+.dlm-primary {
+  font-size: var(--dlm-primary-size);
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.dlm-secondary {
+  font-size: var(--dlm-secondary-size);
+  font-weight: 400;
+  opacity: var(--dlm-secondary-opacity);
+  line-height: 1.2;
+}
+
+/* ---------- Remove native submenu arrow ---------- */
+
+.wp-block-navigation__submenu-icon {
   display: none !important;
 }
 
-/* -----------------------------------------------------
-   CHEVRON (CLOSED)
-   ----------------------------------------------------- */
+/* ---------- Custom chevron ---------- */
 
-var(--dlm-scope)
-.wp-block-navigation-item.has-child
-> .wp-block-navigation-item__content
-.nav-stack::after {
+.wp-block-navigation-item.has-child .dlm-stack::after {
   content: "";
   position: absolute;
   right: 0;
-  top: 20%;
+  top: 50%;
   width: var(--dlm-chevron-size);
   height: var(--dlm-chevron-size);
   border-right: 2px solid var(--dlm-chevron-color);
@@ -50,63 +59,22 @@ var(--dlm-scope)
   pointer-events: none;
 }
 
-/* -----------------------------------------------------
-   CHEVRON (OPEN)
-   ----------------------------------------------------- */
+/* ---------- Open state (desktop + mobile) ---------- */
 
-var(--dlm-scope)
 .wp-block-navigation-item.has-child
 > .wp-block-navigation-item__content[aria-expanded="true"]
-.nav-stack::after {
+.dlm-stack::after {
   transform: translateY(-50%) rotate(-135deg);
 }
 
-/* -----------------------------------------------------
-   DESKTOP DROPDOWNS
-   ----------------------------------------------------- */
+/* ---------- Mobile spacing ---------- */
 
-@media (min-width: calc(var(--dlm-breakpoint) + 1px)) {
-
-  var(--dlm-scope)
-  .wp-block-navigation-item.has-child {
-    position: relative;
-    overflow: visible;
+@media (max-width: 1280px) {
+  .dlm-stack {
+    padding-right: 24px;
   }
 
-  var(--dlm-scope)
-  .wp-block-navigation__submenu-container {
-    display: none;
-    position: absolute;
-    top: 100%;
-    right: 0;
-    min-width: 250px;
-    padding: 20px;
-    background: #fff;
-    z-index: 9999;
-  }
-
-  var(--dlm-scope)
-  .wp-block-navigation-item.has-child:hover
-  > .wp-block-navigation__submenu-container {
-    display: block;
-  }
-}
-
-/* -----------------------------------------------------
-   MOBILE OVERLAY
-   ----------------------------------------------------- */
-
-@media (max-width: var(--dlm-breakpoint)) {
-
-  var(--dlm-scope)
-  .wp-block-navigation__submenu-container {
-    display: none;
-  }
-
-  var(--dlm-scope)
-  .wp-block-navigation-submenu__toggle[aria-expanded="true"]
-  ~ .wp-block-navigation__submenu-container {
-    display: block;
-    margin: 12px 0 0 24px;
+  .dlm-secondary {
+    opacity: 0.9;
   }
 }
